@@ -1,57 +1,53 @@
-# Hawkey-HDR
-Combined 2 and 3 HDR exposures into single directory.  
-
+# Hawkey-HDR  
+This is a Windows app that interfaces with the Hawkeye camera and  
+produces a sequence of bracketed images that can be postprocessed in  
+HDR utility.  
 It produces images with 3 exposures. The first image has
 exp = normal
 Second image has exp = normal * 2^(increment)  
 And the third image has exp = normal / 2^(increment + decrement)
-In both 2 or 3 exposure mode all bright and dark images are stored in  
+The bright and dark images are stored in  
 alternative sequences in the same directory.
-Example 2 exp:
-1-bright,2-dark,3-bright,4-dark,...
 Example 3 exp:
 1-normal,2-bright,3-dark,4-normal,5-bright,6-dark,...
 The Increment and Decrement Exposure values were added in this version so that it is possible to control  
 the exposure increase from normal and decrease from normal separately.  
   
-This High Definition HDR app was made specifically to work with the Imagingsource UX178 camera.  
-This particular camera has a double trigger requirement i.e. the trigger has to be applied twice to set the new exposure.  
-Thus, for HDR 2EXP, 4 triggers are required to get the low and high exposure imagees,
-and conversly for 3EXP 6 triggers are required.
-The Hawkeye MSP430 fw was also modified to provide the 3 and 3 exposure selection.  
-The selection is done by the REWIND switch. 
+This High Definition HDR app was made specifically to work with the Imagingsource UX226 or BUC02 cameras.  
+The Hawkeye MSP430 firmware was also modified to provide the 3 exposure selection.  
+The selection is done by the REWIND switch in slow speed mode.
 The REWIND switch is normally used to rewind film with the RUN switch turned off.
 With the RUN switch ON, the REWIND switch has no affect normally, but in this version it  
-is used to switch between the 2EXP and 3EXP mode.  
-REWIND OFF - 2EXP mode  
+is used to switch to HDR mode.  
+REWIND OFF - 1EXP mode  
 REWIND ON - 3EXP mode  
 Important note:
 When stopping the Hawkeye turn the RUN switch off before the REWIND switch. Failing  
 to do that may result in the last dark image missing.
 
-Note: Hawkeye board V12 or higher and MSP FW are required for proper HDR operation to 
-provide four or six camera triggers for a single external trigger. 
+Note: Hawkeye board V12 or higher and MSP FW are required for proper HDR operation. 
 The firmware is available here. Download the workspace_v9.zip file and extract it
 somewhere in the local drive.  
 Then in Code Composer use File->Switch Workspace to load in this new wokspace.
 The project that you want to build is  
-freq_gen_12_hdr_ux178_2-3exp  
+hawkeye_12_hdr  
  
 Usage:  
-To run the sw download the files from this repo and go to the  HDR-UX178-1DIR-2-3-EXP-COMBINED-V1\HDR
-.../bin/Release  
-and run the HDR1.exe file.
+To run the sw download the files from this repo and go to the  HDR/bin/Release  
+directory and run the HDR1.exe file by double clicking on it.
 The Device Settings window will pop up.  
 Select the device and resolution as required and click OK.  
 The Device Window will close and the app window will pop up.  
 
-The directory path is set by the Path button. 
+The directory path of the output images is set by the Path button. 
 ![Snap11](https://user-images.githubusercontent.com/48537944/143714863-9bede78c-5a75-41da-941d-d05f7d7bab9e.jpg)
 
 
 The image numbering will be sequential. If you want the start number different than 1  
 then enter it in the Img Number field or use the arrows.  
-This can come in handy if the scan is stopped and restarted.
+If using enfuseGUI the numbering should start at 1000 because  
+enfuseGUI does not sort the images properly.
+This can also come in handy if the scan is stopped and restarted.
    
 Then click on Trigger buton a few times.  
 It will go from red to white. Leave it white for free run.  
@@ -62,8 +58,7 @@ Click on Settings button.
 The familiar camera settings will pop up.  
 Set the color, partial scan etc  
 Turn auto exposure off the exposure tab. The HDR runs in manual exposure. 
-For 2EXP set the exposure somewhat overexposed so that the shadows are visible. 
-Set Exp Dec to the number of stops times 10. I.e. for 1 stop decrement use number 10.
+Set Exp Dec to the number of stops times 3. I.e. for 1 stop decrement use number 3.
 Do a test run to see if the decremnet is large enough to reduce the overexposure of bright areas.  
 You can leave the settings window open or you can close it if no more adjustments are anticipated.
 Click again on the Start button.
@@ -105,8 +100,6 @@ BTW - you can run the scanner without running the Hawkeye. With the Hawkeye led 
 sw trigger and that will save the images.  
 ![Snap9](https://user-images.githubusercontent.com/48537944/142745329-11937d96-d16c-446e-a617-2d46aa8a0a26.jpg)
 The trigger has to be on and then the sw trigger button can be used to trigger the camera.  
-Two triggers per imamge for 2EXP  
-Three triggers per image for 3EXP  
 This can be handy for troubleshooting of the issues.  
 
 Note, once the scan process is complete you can use an app to convert the high and low images into HDR.  
@@ -121,6 +114,7 @@ Additional notes:
 If tiff file transfer, is unreliable (occasional dropped frames), switch to jpeg. The difference is not perceptible not even on a large screen.The jpg files can be converted to a combined HDR tiff file, if needed, with Enfuse.
 
 Can use basic script batch file to process 2 exposure HDR files in separate folders using Enfuse v4.2.
+Note: Work in progress to add 3 exposure mode to the batch file.
 http://enblend.sourceforge.net/index.htm  
    
 For single dir HDR use EnfuseGUI v2.1.3, this gui uses Enfuse v4.0 and makes the process very simple.
